@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sistem Error!</title>
+    <style>
+        body {
+            background-color: black;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            touch-action: none; /* Biar gak bisa scroll/zoom pas ngejar tombol */
+        }
+
+        #terminal { width: 85%; max-width: 600px; z-index: 1; }
+        .error { color: red; font-weight: bold; }
+
+        /* Tombol Jebakan */
+        #btn-jebakan {
+            position: absolute;
+            padding: 15px 25px;
+            background-color: #ff0000;
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            display: none; 
+            z-index: 999;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            transition: all 0.1s ease;
+        }
+
+        #final-message {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s;
+        }
+
+        h1 { font-size: 2.5rem; color: #ff4d4d; text-shadow: 0 0 10px #ff4d4d; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body onclick="goFullScreen()">
+
+    <button id="btn-jebakan" onmouseover="kabur()" ontouchstart="kabur()" onclick="kabur()">BATALKAN HAPUS DATA!</button>
+
+    <div id="terminal">
+        <p id="line1"></p>
+        <p id="line2"></p>
+        <p id="line3" class="error"></p>
+        <p id="line4"></p>
+        <p id="line5" class="error"></p>
+    </div>
+
+    <div id="final-message">
+        <h1>PRANK SAYANG! ❤️</h1>
+        <p style="color: white; font-size: 1.2rem;">Ciee panik ya ngejar tombolnya?</p>
+        <p style="color: #0f0;">HP kamu aman kok, I Love You!</p>
+    </div>
+
+    <script>
+        const lines = [
+            "> Connecting to secure_server_v4.0...",
+            "> Accessing private_gallery_encrypt...",
+            "> WARNING: SYSTEM BREACH DETECTED!",
+            "> Deleting all files... 45%... 89%...",
+            "> CRITICAL ERROR: DATA WIPED PERMANENTLY!"
+        ];
+
+        // Biar Full Screen pas dia interaksi
+        function goFullScreen() {
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) { elem.requestFullscreen(); }
+            else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+        }
+
+        // Fungsi Tombol Kabur (Versi Agresif)
+        function kabur() {
+            const btn = document.getElementById('btn-jebakan');
+            // Geser posisi ke titik acak di layar
+            const newX = Math.random() * (window.innerWidth - btn.offsetWidth - 20);
+            const newY = Math.random() * (window.innerHeight - btn.offsetHeight - 20);
+            
+            btn.style.left = Math.max(10, newX) + 'px';
+            btn.style.top = Math.max(10, newY) + 'px';
+        }
+
+        function typeWriter(text, i, elementId, speed, callback) {
+            if (i < text.length) {
+                document.getElementById(elementId).innerHTML += text.charAt(i);
+                setTimeout(() => typeWriter(text, i + 1, elementId, speed, callback), speed);
+            } else if (callback) {
+                setTimeout(callback, 800);
+            }
+        }
+
+        // Jalankan Script
+        setTimeout(() => {
+            typeWriter(lines[0], 0, "line1", 40, () => {
+                typeWriter(lines[1], 0, "line2", 40, () => {
+                    // Munculin tombol pas lagi "Accessing" biar dia usaha batalin
+                    const btn = document.getElementById('btn-jebakan');
+                    btn.style.display = 'block';
+                    kabur(); // Kasih posisi acak pertama kali
+
+                    typeWriter(lines[2], 0, "line3", 30, () => {
+                        typeWriter(lines[3], 0, "line4", 40, () => {
+                            typeWriter(lines[4], 0, "line5", 20, () => {
+                                setTimeout(() => {
+                                    document.getElementById('terminal').style.display = 'none';
+                                    document.getElementById('btn-jebakan').style.display = 'none';
+                                    document.getElementById('final-message').style.display = 'block';
+                                    document.body.style.backgroundColor = "#1a0000";
+                                }, 2000);
+                            });
+                        });
+                    });
+                });
+            });
+        }, 500);
+    </script>
+</body>
+</html>
+
